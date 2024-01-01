@@ -1,0 +1,9 @@
+<div class="col-12">
+    <span>Select Time: </span>
+    <span class="px-2 py-1 ms-2 rounded" *ngFor="let timing of timings"
+          (click)="selectedTiming = timing; selectedTimingChanged.emit(selectedTiming); countdown=selectedTiming"
+          [class.selected-timing]="selectedTiming===timing"
+    >{{timing}}</span>
+</div>
+
+<div class="col-12 fs-1 d-flex justify-content-center">{{countdown}} </div>

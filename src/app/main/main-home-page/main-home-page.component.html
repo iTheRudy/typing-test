@@ -1,0 +1,39 @@
+<div class="row m-0 border-top border-dark border-2 h-100">
+    <div class="col-12 d-flex justify-content-center align-items-center">
+        <div class="row w-100 justify-content-center">
+            <div class="col-8">
+                <div class="row">
+                    <app-main-count-down
+                            (selectedTimingChanged)="print('selected Timing Changed'); selectedTiming=$event; speedCalculator.selectedTiming=$event"
+                            (timerEnded)="speedCalculator.calculateSpeed(); showTypingSpeed = true;"
+                            #timer
+                    ></app-main-count-down>
+                    <div class="col-12">
+                        <span *ngFor="let word of displayWords" class="font-normal mr-2">{{word}}</span>
+                    </div>
+                    <div class="col-12 d-flex justify-content-center flex-column">
+                        <textarea [disabled]="showTypingSpeed" [(ngModel)]="textAreaContent" id="text-area"
+                                  class="w-100 h-50 border-1 font-normal"
+                                  rows="14"
+                                  (focus)="handleFocus()"
+                                  (click)="handleClick()"
+                                  (input)="onTextareaChange($event); timer.timerStarted?'':timer.initializeTimer(); showTypingSpeed=false"
+                                  #textAreaElement
+                        ></textarea>
+                        <button class="d-inline-block b-1px-black" (click)="textAreaElement.disabled=false;textAreaElement.focus(); resetTest(); timer.reset()">
+                            Enter
+                        </button>
+                        <app-main-calculate-typing-speed
+                                [actualText]="actualText"
+                                [selectedTiming]="selectedTiming"
+                                [userInputText]="textAreaContent.split(' ')"
+                                [showTypingSpeed]="showTypingSpeed"
+                                (typingSpeedCalculated)="resetTest()"
+                                #speedCalculator
+                        ></app-main-calculate-typing-speed>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
