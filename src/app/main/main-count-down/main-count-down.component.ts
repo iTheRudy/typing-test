@@ -23,6 +23,7 @@ export class MainCountDownComponent implements OnInit {
     timerEnded = new EventEmitter<boolean>();
 
 
+    
     ngOnInit() {
         this.selectedTiming = this.timings[0];
         this.countdown = this.selectedTiming;
