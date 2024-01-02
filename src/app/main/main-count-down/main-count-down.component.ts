@@ -21,9 +21,8 @@ export class MainCountDownComponent implements OnInit {
     timerInterval: any;
     @Output()
     timerEnded = new EventEmitter<boolean>();
-
-
     
+
     ngOnInit() {
         this.selectedTiming = this.timings[0];
         this.countdown = this.selectedTiming;
