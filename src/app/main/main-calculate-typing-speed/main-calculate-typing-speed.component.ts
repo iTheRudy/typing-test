@@ -5,7 +5,7 @@ import {AfterViewInit, Component, EventEmitter, Input, Output} from '@angular/co
     templateUrl: './main-calculate-typing-speed.component.html',
     styleUrls: ['./main-calculate-typing-speed.component.scss']
 })
-export class MainCalculateTypingSpeedComponent implements AfterViewInit{
+export class MainCalculateTypingSpeedComponent implements AfterViewInit {
     @Input()
     showTypingSpeed = false;
 
@@ -20,10 +20,18 @@ export class MainCalculateTypingSpeedComponent implements AfterViewInit{
     @Input()
     selectedTiming!: number;
 
+    totalCharacters = 0;
+
+    validCharacters = 0;
+
+    newCalculatedSpeed!: number;
+
+    calculatedRawSpeed!: number;
+
     @Output()
     typingSpeedCalculated = new EventEmitter<number>();
 
-    calculateSpeed(){
+    calculateSpeed() {
         console.log('inputwords;', this.userInputText)
         console.log('this.words;', this.actualText)
         let i = 0;
@@ -34,11 +42,16 @@ export class MainCalculateTypingSpeedComponent implements AfterViewInit{
             console.log('value ', value, ' word ', this.actualText[i])
             if (value === this.actualText[i]) {
                 correctWords++;
+                this.validCharacters += this.actualText[i].length
             }
+            this.totalCharacters += this.actualText[i].length;
             i++;
         })
         console.log('correctWords ', correctWords);
         console.log('multiplier ', multiplier)
+        console.log(this.validCharacters / 5)
+        this.newCalculatedSpeed = (this.validCharacters / 5) / (this.selectedTiming / 60);
+        this.calculatedRawSpeed = (this.totalCharacters / 5) / (this.selectedTiming / 60);
         this.currentTypingSpeed = correctWords * multiplier;
         this.typingSpeedCalculated.emit(this.currentTypingSpeed)
     }
