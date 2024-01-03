@@ -1,4 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {FileService} from "../../files.service";
+import {MainCountDownComponent} from "../main-count-down/main-count-down.component";
 
 @Component({
     selector: 'app-main-home-page',
@@ -8,9 +10,17 @@ import {AfterViewInit, Component, ElementRef, OnInit, TemplateRef, ViewChild} fr
 export class MainHomePageComponent implements OnInit, AfterViewInit {
 
 
-    constructor() {
+    constructor(protected fileService: FileService) {
+        this.fileService.getFileContent().subscribe(value => {
+            this.inputString = value.toString();
+            //console.log('File loaded')
+            this.textLoaded = true;
+            this.ngOnInit()
+        })
     }
 
+    @ViewChild('buttonElement', {static: true})
+    timer!: HTMLButtonElement;
 
     // @ViewChild("textAreaElement", {static: false})
     // textAreaElement: TemplateRef<any>;
@@ -25,13 +35,15 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
     currentTypingSpeed: number | undefined;
 
 
-    inputString = 'the quick brown fox jumps over the lazy dog cat and elephant giraffe computer keyboard monitor and mouse make for a dynamic desktop setup whether working on a laptop or a desktop the internet connects us to vast websites developers engage in programming crafting software and understanding hardware intricacies the world of technology intersects with science mathematics and ongoing learning education at a university involves research analysis and statistical exploration information and communication form the core of language and literature creating structured paragraphs efficiency productivity and multitasking are key in meeting deadlines and project innovation creativity and imagination drive solutions to problems optimizing collaboration in teamwork effective communication in meetings supports strategic implementation for overall success'
+    // inputString = 'the quick brown fox jumps over the lazy dog cat and elephant giraffe computer keyboard monitor and mouse make for a dynamic desktop setup whether working on a laptop or a desktop the internet connects us to vast websites developers engage in programming crafting software and understanding hardware intricacies the world of technology intersects with science mathematics and ongoing learning education at a university involves research analysis and statistical exploration information and communication form the core of language and literature creating structured paragraphs efficiency productivity and multitasking are key in meeting deadlines and project innovation creativity and imagination drive solutions to problems optimizing collaboration in teamwork effective communication in meetings supports strategic implementation for overall success'
+    inputString = 'text to be loaded'
     textAreaContent = '';
 
     actualText = this.inputString.split(' ')
     displayWords = new Array<string>();
     selectedTiming!: number;
 
+    textLoaded = false;
 
     ngOnInit() {
         this.actualText = this.inputString.split(' ');
@@ -41,12 +53,12 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit() {
-        console.log('inside afterViewInit')
+        //console.log('inside afterViewInit')
         this.textAreaElement?.nativeElement.focus()
     }
 
     resetTest() {
-        console.log('test reset')
+        //console.log('test reset')
         this.startIndex = 0;
         this.currentIndex = 0;
         this.endIndex = 10;
@@ -56,11 +68,14 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
         this.textAreaContent = '';
         this.textAreaElement?.nativeElement.focus();
         this.displayWords = this.actualText.slice(this.currentIndex, this.endIndex)
-        console.log('test reset end')
+        //console.log('test reset end')
     }
 
 
     onTextareaChange(event: Event): void {
+        if (this.showTypingSpeed) {
+            this.resetTest()
+        }
         // @ts-ignore
         const input: HTMLTextAreaElement = event.target;
         const textAreaWords = input.value.split(' ');
@@ -72,25 +87,23 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
         if (textAreaWords.length == this.endIndex) {
             this.currentIndex = this.endIndex;
             this.endIndex = Math.min(this.endIndex + 10, this.actualText.length)
-            console.log(this.currentIndex, '/', this.endIndex)
-            console.log(this.displayWords.length)
+            //console.log(this.currentIndex, '/', this.endIndex)
+            //console.log(this.displayWords.length)
             this.displayWords = this.actualText.slice(this.currentIndex, this.endIndex);
         }
     }
 
 
-
-
     print(data?: any) {
-        console.log(data);
+        //console.log(data);
         // this.textAreaElement.target.click;
     }
 
     handleFocus() {
-        console.log('textArea on focus');
+        //console.log('textArea on focus');
     }
 
     handleClick() {
-        console.log('textArea on click');
+        //console.log('textArea on click');
     }
 }

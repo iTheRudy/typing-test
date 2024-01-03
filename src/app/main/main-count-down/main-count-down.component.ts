@@ -21,7 +21,7 @@ export class MainCountDownComponent implements OnInit {
     timerInterval: any;
     @Output()
     timerEnded = new EventEmitter<boolean>();
-    
+
 
     ngOnInit() {
         this.selectedTiming = this.timings[0];
@@ -46,7 +46,7 @@ export class MainCountDownComponent implements OnInit {
     }
 
     setTimeIntervalAndStartTimer() {
-        console.log('inside setTimeIntervalAndStartTimer')
+        //console.log('inside setTimeIntervalAndStartTimer')
         this.timerInterval = setInterval(this.changeTime, 1000)
     }
 
