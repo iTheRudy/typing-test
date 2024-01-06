@@ -54,7 +54,7 @@ export class MainCalculateTypingSpeedComponent implements AfterViewInit {
         })
         //console.log('correctWords ', correctWords);
         //console.log('multiplier ', multiplier)
-        //console.log(this.validCharacters / 5)
+        console.log(this.validCharacters)
         //console.log(this.correctText)
         this.newCalculatedSpeed = (this.validCharacters / 5) / (this.selectedTiming / 60);
         //console.log(`(${this.validCharacters}/5)/(${this.selectedTiming}/60) = ${this.newCalculatedSpeed}`)

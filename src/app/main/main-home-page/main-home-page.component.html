@@ -8,23 +8,29 @@
             <div class="col-8">
                 <div class="row">
                     <app-main-count-down
-                            (selectedTimingChanged)="print('selected Timing Changed'); selectedTiming=$event; speedCalculator.selectedTiming=$event"
+                            (selectedTimingChanged)="print('selected Timing Changed');
+                             selectedTiming=$event; speedCalculator.selectedTiming=$event"
                             (timerEnded)="speedCalculator.calculateSpeed(); showTypingSpeed = true;"
                             #timer
                     ></app-main-count-down>
-                    <div class="col-12" *ngIf="textLoaded">
-                        <span *ngFor="let word of displayWords" class="font-normal mr-2">{{word}}</span>
+                    <div class="col-11 px-3" *ngIf="textLoaded">
+                        <span *ngFor="let index of indexArray"
+                              [class.highlighted-word]="index === highlightedWord"
+                              class="font-normal mr-2">{{firstRowOfWords[index]}}</span>
+                    </div>
+                    <div class="col-11 px-3" *ngIf="textLoaded">
+                        <span *ngFor="let word of secondRowOfWords" class="font-normal mr-2">{{word}}</span>
                     </div>
                     <div class="col-12 d-flex justify-content-center flex-column">
-                        <textarea [disabled]="showTypingSpeed" [(ngModel)]="textAreaContent" id="text-area"
+                        <textarea [readOnly]="showTypingSpeed" [(ngModel)]="textAreaContent" id="text-area"
                                   class="w-100 h-50 border-1 font-normal"
                                   rows="14"
                                   (focus)="handleFocus()"
                                   (click)="handleClick()"
-                                  (input)="onTextareaChange($event); timer.timerStarted?'':timer.initializeTimer(); showTypingSpeed=false"
+                                  (input)="updateHighlightedIndex();onTextareaChange($event); timer.timerStarted?'':timer.initializeTimer(); showTypingSpeed=false"
                                   #textAreaElement
                         ></textarea>
-                        <button class="d-inline-block b-1px-black" (click)="textAreaElement.disabled=false;textAreaElement.focus(); resetTest(); timer.reset()">
+                        <button type="button" class="d-inline-block  b-1px-black" (click)=" textAreaElement.focus(); resetTest(); timer.reset()">
                             Click here to restart test (tab+enter)
                         </button>
                         <app-main-calculate-typing-speed
@@ -32,7 +38,6 @@
                                 [selectedTiming]="selectedTiming"
                                 [userInputText]="textAreaContent.split(' ')"
                                 [showTypingSpeed]="showTypingSpeed"
-                                (typingSpeedCalculated)="resetTest()"
                                 #speedCalculator
                         ></app-main-calculate-typing-speed>
                     </div>

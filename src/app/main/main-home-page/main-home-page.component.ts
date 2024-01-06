@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {FileService} from "../../files.service";
-import {MainCountDownComponent} from "../main-count-down/main-count-down.component";
+import {DEFAULT_NO_OF_WORDS} from "../main.constants";
 
 @Component({
     selector: 'app-main-home-page',
@@ -27,8 +27,11 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
     @ViewChild('textAreaElement') textAreaElement: ElementRef | undefined;
 
     startIndex = 0;
+    indexFill = 0;
     currentIndex = 0;
-    endIndex = 0;
+    endIndex = DEFAULT_NO_OF_WORDS;
+
+    indexArray = Array.from({length: DEFAULT_NO_OF_WORDS}, (_, index) => index);
 
     showTypingSpeed = false;
 
@@ -40,15 +43,20 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
     textAreaContent = '';
 
     actualText = this.inputString.split(' ')
-    displayWords = new Array<string>();
+    firstRowOfWords = new Array<string>();
+    secondRowOfWords = new Array<string>();
+
+    highlightedWord!: number;
+
     selectedTiming!: number;
 
     textLoaded = false;
 
     ngOnInit() {
+        console.log(this.indexArray);
         this.actualText = this.inputString.split(' ');
-        this.endIndex = 10
-        this.displayWords = this.actualText.slice(this.startIndex, this.endIndex);
+        this.firstRowOfWords = this.actualText.slice(this.startIndex, this.endIndex);
+        this.secondRowOfWords = this.actualText.slice(this.endIndex, this.endIndex + DEFAULT_NO_OF_WORDS)
         // this.textAreaElement?.nativeElement.focus();
     }
 
@@ -61,13 +69,15 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
         //console.log('test reset')
         this.startIndex = 0;
         this.currentIndex = 0;
-        this.endIndex = 10;
+        this.endIndex = DEFAULT_NO_OF_WORDS;
         this.showTypingSpeed = false;
         this.textAreaElement?.nativeElement.enable
         this.currentTypingSpeed = undefined;
         this.textAreaContent = '';
+        this.updateHighlightedIndex();
         this.textAreaElement?.nativeElement.focus();
-        this.displayWords = this.actualText.slice(this.currentIndex, this.endIndex)
+        this.firstRowOfWords = this.actualText.slice(this.currentIndex, this.endIndex);
+        this.secondRowOfWords = this.actualText.slice(this.endIndex, this.endIndex + DEFAULT_NO_OF_WORDS)
         //console.log('test reset end')
     }
 
@@ -80,16 +90,17 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
         const input: HTMLTextAreaElement = event.target;
         const textAreaWords = input.value.split(' ');
         const length = input.value.split('').length;
-        this.changeDisplayWords(textAreaWords);
+        this.changeFirstRowOfWords(textAreaWords);
     }
 
-    changeDisplayWords(textAreaWords: string[]) {
-        if (textAreaWords.length == this.endIndex) {
+    changeFirstRowOfWords(textAreaWords: string[]) {
+        if (textAreaWords.length > this.endIndex) {
             this.currentIndex = this.endIndex;
-            this.endIndex = Math.min(this.endIndex + 10, this.actualText.length)
+            this.endIndex = Math.min(this.endIndex + DEFAULT_NO_OF_WORDS, this.actualText.length)
             //console.log(this.currentIndex, '/', this.endIndex)
-            //console.log(this.displayWords.length)
-            this.displayWords = this.actualText.slice(this.currentIndex, this.endIndex);
+            //console.log(this.firstRowOfWords.length)
+            this.firstRowOfWords = this.secondRowOfWords;
+            this.secondRowOfWords = this.actualText.slice(this.endIndex, this.endIndex + DEFAULT_NO_OF_WORDS)
         }
     }
 
@@ -105,5 +116,15 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
 
     handleClick() {
         //console.log('textArea on click');
+    }
+
+    protected readonly DEFAULT_NO_OF_WORDS = DEFAULT_NO_OF_WORDS;
+
+    updateHighlightedIndex() {
+        // this.highlightedWord =
+        //     console.log(this.textAreaContent);
+        this.highlightedWord = (this.textAreaContent.split(' ').length-1) % (DEFAULT_NO_OF_WORDS);
+        console.log(this.textAreaContent.split(' ').length-1 , '%', DEFAULT_NO_OF_WORDS , '=' ,this.highlightedWord);
+        // console.log(this.highlightedWord);
     }
 }
