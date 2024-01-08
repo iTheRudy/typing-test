@@ -1,3 +1,11 @@
-<label *ngIf="showTypingSpeed">Your typing speed is {{currentTypingSpeed}}wpm</label>
-<label *ngIf="showTypingSpeed">Your new calcualted speed is {{newCalculatedSpeed}}wpm</label>
-<label *ngIf="showTypingSpeed">Your raw typing speed is {{calculatedRawSpeed}}wpm</label>
+<div *ngIf="showTypingSpeed">
+    <label>Typing speed: {{currentTypingSpeed}}wpm</label>
+    <br>
+    <label>New calculated :{{newCalculatedSpeed}}wpm</label>
+    <br>
+    <label>Raw speed: {{calculatedRawSpeed}}wpm</label>
+    <br>
+    <label>Total characters: {{totalCharacters}}</label>
+    <br>
+    <label>Correct characters: {{validCharacters}}</label>
+</div>

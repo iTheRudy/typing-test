@@ -24,7 +24,7 @@
                     <div class="col-12 d-flex justify-content-center flex-column">
                         <textarea [readOnly]="showTypingSpeed" [(ngModel)]="textAreaContent" id="text-area"
                                   class="w-100 h-50 border-1 font-normal"
-                                  rows="14"
+                                  rows="2"
                                   (focus)="handleFocus()"
                                   (click)="handleClick()"
                                   (input)="updateHighlightedIndex();onTextareaChange($event); timer.timerStarted?'':timer.initializeTimer(); showTypingSpeed=false"
