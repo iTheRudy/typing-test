@@ -1,9 +1,9 @@
 <div *ngIf="showTypingSpeed">
-    <label>Typing speed: {{currentTypingSpeed}}wpm</label>
+    <label>Typing speed: {{currentTypingSpeed|number:'1.0-0'}}wpm</label>
     <br>
-    <label>New calculated :{{newCalculatedSpeed}}wpm</label>
+    <label>New calculated :{{newCalculatedSpeed|number:'1.0-0'}}wpm</label>
     <br>
-    <label>Raw speed: {{calculatedRawSpeed}}wpm</label>
+    <label>Raw speed: {{calculatedRawSpeed|number:'1.0-0'}}wpm</label>
     <br>
     <label>Total characters: {{totalCharacters}}</label>
     <br>

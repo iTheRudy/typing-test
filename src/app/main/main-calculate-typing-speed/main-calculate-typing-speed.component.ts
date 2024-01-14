@@ -39,6 +39,7 @@ export class MainCalculateTypingSpeedComponent implements AfterViewInit {
         let i = 0;
         let correctWords = 0;
         let multiplier = 60 / this.selectedTiming;
+        console.log('user input text in calculate speed', this.userInputText);
         //console.log(this.userInputText.length);
         this.userInputText.map(value => {
             //console.log('value ', value, ' word ', this.actualText[i])
@@ -49,7 +50,7 @@ export class MainCalculateTypingSpeedComponent implements AfterViewInit {
                 this.validCharacters += this.actualText[i].length
                 this.correctText += value + ' ';
             }
-            this.totalCharacters += this.actualText[i].length;
+            this.totalCharacters += value.length;
             i++;
         })
         //console.log('correctWords ', correctWords);
@@ -65,6 +66,12 @@ export class MainCalculateTypingSpeedComponent implements AfterViewInit {
 
     ngAfterViewInit() {
         //console.log('from calculator', this.selectedTiming)
+    }
+
+    reset(){
+        this.totalCharacters = 0;
+        this.validCharacters = 0;
+        this.currentTypingSpeed = 0;
     }
 
 }

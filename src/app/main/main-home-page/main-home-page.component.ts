@@ -77,7 +77,8 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
         this.updateHighlightedIndex();
         this.textAreaElement?.nativeElement.focus();
         this.firstRowOfWords = this.actualText.slice(this.currentIndex, this.endIndex);
-        this.secondRowOfWords = this.actualText.slice(this.endIndex, this.endIndex + DEFAULT_NO_OF_WORDS)
+        this.secondRowOfWords = this.actualText.slice(this.endIndex, this.endIndex + DEFAULT_NO_OF_WORDS);
+        // this.ca
         //console.log('test reset end')
     }
 
@@ -89,6 +90,7 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
         // @ts-ignore
         const input: HTMLTextAreaElement = event.target;
         const textAreaWords = input.value.split(' ');
+        console.log('User INput',input.value);
         const length = input.value.split('').length;
         this.changeFirstRowOfWords(textAreaWords);
     }

@@ -30,7 +30,7 @@
                                   (input)="updateHighlightedIndex();onTextareaChange($event); timer.timerStarted?'':timer.initializeTimer(); showTypingSpeed=false"
                                   #textAreaElement
                         ></textarea>
-                        <button type="button" class="d-inline-block  b-1px-black" (click)=" textAreaElement.focus(); resetTest(); timer.reset()">
+                        <button type="button" class="d-inline-block  b-1px-black" (click)=" textAreaElement.focus(); resetTest(); timer.reset(); speedCalculator.reset()">
                             Click here to restart test (tab+enter)
                         </button>
                         <app-main-calculate-typing-speed
