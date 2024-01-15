@@ -14,7 +14,6 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
         this.fileService.getFileContent().subscribe(value => {
             this.inputString = value.toString();
             //console.log('File loaded')
-            this.textLoaded = true;
             this.ngOnInit()
         })
     }
@@ -45,6 +44,7 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
     actualText = this.inputString.split(' ')
     firstRowOfWords = new Array<string>();
     secondRowOfWords = new Array<string>();
+    wrongWords = new Set<number>();
 
     highlightedWord!: number;
 
@@ -53,10 +53,16 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
     textLoaded = false;
 
     ngOnInit() {
+        // this.wrongWords.add(3);
         console.log(this.indexArray);
         this.actualText = this.inputString.split(' ');
+        console.log(this.actualText);
+        this.shuffleArray(this.actualText);
+        console.log(this.actualText);
         this.firstRowOfWords = this.actualText.slice(this.startIndex, this.endIndex);
         this.secondRowOfWords = this.actualText.slice(this.endIndex, this.endIndex + DEFAULT_NO_OF_WORDS)
+        this.textLoaded = true;
+        this.updateHighlightedIndex();
         // this.textAreaElement?.nativeElement.focus();
     }
 
@@ -65,8 +71,22 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
         this.textAreaElement?.nativeElement.focus()
     }
 
+    shuffleArray(strings: string[]): string[] {
+        const arrayCopy = [...strings];
+        // Math.random() returns a floating point number between 0 and 1;
+
+        for (let i = arrayCopy.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arrayCopy[i], arrayCopy[j]] = [arrayCopy[j], arrayCopy[i]];
+        }
+        this.actualText = arrayCopy;
+        return arrayCopy;
+    }
+
     resetTest() {
         //console.log('test reset')
+        this.shuffleArray(this.actualText);
+        this.wrongWords.clear();
         this.startIndex = 0;
         this.currentIndex = 0;
         this.endIndex = DEFAULT_NO_OF_WORDS;
@@ -90,13 +110,28 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
         // @ts-ignore
         const input: HTMLTextAreaElement = event.target;
         const textAreaWords = input.value.split(' ');
-        console.log('User INput',input.value);
+        console.log('User Input', input.value);
         const length = input.value.split('').length;
         this.changeFirstRowOfWords(textAreaWords);
+        this.checkSpellingOfLastWord(textAreaWords, this.firstRowOfWords);
+    }
+
+    checkSpellingOfLastWord(textAreaWords: string[], firstRowOfWords: string[]) {
+        const lastEnteredWord = textAreaWords[textAreaWords.length - 1];
+        const correspondingDisplayWord = firstRowOfWords[this.highlightedWord];
+        console.log('lastEnteredWord', lastEnteredWord);
+        console.log('correspondingDisplayWord', correspondingDisplayWord);
+        const wrongWord = !correspondingDisplayWord.includes(lastEnteredWord);
+        if (wrongWord) {
+            this.wrongWords.add(this.highlightedWord);
+        } else {
+            this.wrongWords.delete(this.highlightedWord);
+        }
     }
 
     changeFirstRowOfWords(textAreaWords: string[]) {
         if (textAreaWords.length > this.endIndex) {
+            this.wrongWords.clear();
             this.currentIndex = this.endIndex;
             this.endIndex = Math.min(this.endIndex + DEFAULT_NO_OF_WORDS, this.actualText.length)
             //console.log(this.currentIndex, '/', this.endIndex)
@@ -125,8 +160,8 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
     updateHighlightedIndex() {
         // this.highlightedWord =
         //     console.log(this.textAreaContent);
-        this.highlightedWord = (this.textAreaContent.split(' ').length-1) % (DEFAULT_NO_OF_WORDS);
-        console.log(this.textAreaContent.split(' ').length-1 , '%', DEFAULT_NO_OF_WORDS , '=' ,this.highlightedWord);
+        this.highlightedWord = (this.textAreaContent.split(' ').length - 1) % (DEFAULT_NO_OF_WORDS);
+        console.log(this.textAreaContent.split(' ').length - 1, '%', DEFAULT_NO_OF_WORDS, '=', this.highlightedWord);
         // console.log(this.highlightedWord);
     }
 }

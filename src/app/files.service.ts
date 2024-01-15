@@ -11,6 +11,6 @@ export class FileService {
     }
 
     getFileContent(): Observable<string> {
-        return this.httpClient.get('assets/test.txt', {responseType: 'text'})
+        return this.httpClient.get('assets/easy.txt', {responseType: 'text'})
     }
 }
