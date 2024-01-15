@@ -1,7 +1,7 @@
 <label *ngIf="!textLoaded">Loading...</label>
 
 <div class="row m-0 border-top border-dark border-2 h-100"
-*ngIf="textLoaded"
+     *ngIf="textLoaded"
 >
     <div class="col-12 d-flex justify-content-center align-items-center">
         <div class="row w-100 justify-content-center">
@@ -15,6 +15,7 @@
                     ></app-main-count-down>
                     <div class="col-11 px-3" *ngIf="textLoaded">
                         <span *ngFor="let index of indexArray"
+                              [class.wrong-word]="wrongWords.has(index)"
                               [class.highlighted-word]="index === highlightedWord"
                               class="font-normal mr-2">{{firstRowOfWords[index]}}</span>
                     </div>
@@ -30,7 +31,11 @@
                                   (input)="updateHighlightedIndex();onTextareaChange($event); timer.timerStarted?'':timer.initializeTimer(); showTypingSpeed=false"
                                   #textAreaElement
                         ></textarea>
-                        <button type="button" class="d-inline-block  b-1px-black" (click)=" textAreaElement.focus(); resetTest(); timer.reset()">
+                    </div>
+                    <div>
+
+                        <button type="button" class="d-inline-block  b-1px-black"
+                                (click)=" textAreaElement.focus(); resetTest(); timer.reset(); speedCalculator.reset()">
                             Click here to restart test (tab+enter)
                         </button>
                         <app-main-calculate-typing-speed
