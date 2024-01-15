@@ -21,6 +21,7 @@ html, body {
 
 .highlighted-word{
   background-color: grey;
+  transition: background-color 0.2s ease;
   @extend .px-1 !optional;
   @extend .py-1 !optional;
 }

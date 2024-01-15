@@ -32,12 +32,15 @@
                                   #textAreaElement
                         ></textarea>
                     </div>
-                    <div>
 
+                    <div class="col-12 d-flex justify-content-center">
                         <button type="button" class="d-inline-block  b-1px-black"
                                 (click)=" textAreaElement.focus(); resetTest(); timer.reset(); speedCalculator.reset()">
-                            Click here to restart test (tab+enter)
+                            Restart test (tab+enter)
                         </button>
+                    </div>
+                    <div>
+
                         <app-main-calculate-typing-speed
                                 [actualText]="actualText"
                                 [selectedTiming]="selectedTiming"
