@@ -12,7 +12,10 @@ export class MainCalculateTypingSpeedComponent implements AfterViewInit {
     currentTypingSpeed: number | undefined;
 
     @Input()
-    actualText!: string[];
+    selectedDifficultyLevel!: string;
+
+    @Input()
+    displayTextArray!: string[];
 
     @Input()
     userInputText!: string[];
@@ -35,19 +38,19 @@ export class MainCalculateTypingSpeedComponent implements AfterViewInit {
 
     calculateSpeed() {
         //console.log('inputwords;', this.userInputText)
-        //console.log('this.words;', this.actualText)
+        //console.log('this.words;', this.displayTextArray)
         let i = 0;
         let correctWords = 0;
         let multiplier = 60 / this.selectedTiming;
         console.log('user input text in calculate speed', this.userInputText);
         //console.log(this.userInputText.length);
         this.userInputText.map(value => {
-            //console.log('value ', value, ' word ', this.actualText[i])
-            if (value === this.actualText[i]) {
+            //console.log('value ', value, ' word ', this.displayTextArray[i])
+            if (value === this.displayTextArray[i]) {
                 correctWords++;
                 //console.log(correctWords)
                 //console.log(value)
-                this.validCharacters += this.actualText[i].length
+                this.validCharacters += this.displayTextArray[i].length
                 this.correctText += value + ' ';
             }
             this.totalCharacters += value.length;

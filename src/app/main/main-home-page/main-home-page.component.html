@@ -8,16 +8,17 @@
             <div class="col-8">
                 <div class="row">
                     <app-main-count-down
-                            (selectedTimingChanged)="print('selected Timing Changed');
-                             selectedTiming=$event; speedCalculator.selectedTiming=$event"
+                            (selectedDifficultyLevelChanged)="selectedDifficultyLevel = $event;fetchText(selectedDifficultyLevel);speedCalculator.reset()"
+                            (selectedTimingChanged)="selectedTiming=$event; speedCalculator.selectedTiming=$event"
                             (timerEnded)="speedCalculator.calculateSpeed(); showTypingSpeed = true;"
                             #timer
                     ></app-main-count-down>
+                    <!--                    <button (click)="fetchText('medium'); resetTest()">Refresh data</button>-->
                     <div class="col-11 px-3" *ngIf="textLoaded">
                         <span *ngFor="let index of indexArray"
                               [class.wrong-word]="wrongWords.has(index)"
                               [class.highlighted-word]="index === highlightedWord"
-                              class="font-normal mr-2">{{firstRowOfWords[index]}}</span>
+                              class="font-normal mr-2 px-1">{{firstRowOfWords[index]}}</span>
                     </div>
                     <div class="col-11 px-3" *ngIf="textLoaded">
                         <span *ngFor="let word of secondRowOfWords" class="font-normal mr-2">{{word}}</span>
@@ -42,7 +43,8 @@
                     <div>
 
                         <app-main-calculate-typing-speed
-                                [actualText]="actualText"
+                                [selectedDifficultyLevel]="selectedDifficultyLevel"
+                                [displayTextArray]="displayTextArray"
                                 [selectedTiming]="selectedTiming"
                                 [userInputText]="textAreaContent.split(' ')"
                                 [showTypingSpeed]="showTypingSpeed"

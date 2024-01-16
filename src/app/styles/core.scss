@@ -20,13 +20,14 @@ html, body {
 }
 
 .highlighted-word{
-  background-color: grey;
+  background-color: lightgrey;
   transition: background-color 0.2s ease;
-  @extend .px-1 !optional;
-  @extend .py-1 !optional;
+  @extend .px-2 !optional;
+  @extend .py-2 !optional;
 }
 
 .wrong-word{
+  transition: background-color 0.2s ease;
   background-color: red;
   @extend .px-1 !optional;
   @extend .py-1 !optional;

@@ -10,7 +10,7 @@ export class FileService {
     constructor(private httpClient: HttpClient) {
     }
 
-    getFileContent(): Observable<string> {
-        return this.httpClient.get('assets/easy.txt', {responseType: 'text'})
+    getFileContent(difficultyLevel: string): Observable<string> {
+        return this.httpClient.get(`assets/${difficultyLevel}.txt`, {responseType: 'text'})
     }
 }

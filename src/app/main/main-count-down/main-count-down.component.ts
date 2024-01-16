@@ -12,8 +12,15 @@ export class MainCountDownComponent implements OnInit {
 
     timings = [10, 15, 30, 60, 120];
 
+    difficultyLevels = ['easy', 'medium', 'hard'];
+
+    selectedDifficultyLevel = this.difficultyLevels[0];
+
     @Output()
     selectedTimingChanged = new EventEmitter<number>();
+
+    @Output()
+    selectedDifficultyLevelChanged = new EventEmitter<string>();
 
     countdown: number | undefined;
 

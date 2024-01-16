@@ -1,4 +1,6 @@
 <div *ngIf="showTypingSpeed">
+    <label>Difficulty: {{selectedDifficultyLevel}}</label>
+    <br>
     <label>Typing speed: {{currentTypingSpeed|number:'1.0-0'}}wpm</label>
     <br>
     <label>New calculated :{{newCalculatedSpeed|number:'1.0-0'}}wpm</label>

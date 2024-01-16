@@ -1,9 +1,22 @@
 <div class="col-12">
-    <span>Select Time: </span>
-    <span class="px-2 py-1 ms-2 rounded" *ngFor="let timing of timings"
-          (click)="selectedTiming = timing; selectedTimingChanged.emit(selectedTiming); countdown=selectedTiming"
-          [class.selected-timing]="selectedTiming===timing"
-    >{{timing}}</span>
-</div>
+    <div class="row">
 
-<div class="col-12 fs-1 d-flex justify-content-center">{{countdown}} </div>
+        <div class="col-6">
+            <span>Select Time: </span>
+            <span class="px-2 py-1 ms-2 rounded" *ngFor="let timing of timings"
+                  (click)="selectedTiming = timing; selectedTimingChanged.emit(selectedTiming); countdown=selectedTiming"
+                  [class.selected-timing]="selectedTiming===timing"
+            >{{timing}}</span>
+        </div>
+
+        <div class="col-6">
+            <span>Diffuculty: </span>
+            <span class="px-2 py-1 ms-2 rounded" *ngFor="let difficultyLevel of difficultyLevels"
+                  (click)="reset();selectedDifficultyLevel = difficultyLevel; selectedDifficultyLevelChanged.emit(selectedDifficultyLevel);"
+                  [class.selected-timing]="selectedDifficultyLevel===difficultyLevel"
+            >{{difficultyLevel|titlecase}}</span>
+        </div>
+
+        <div class="col-12 fs-1 d-flex justify-content-center">{{countdown}} </div>
+    </div>
+</div>
