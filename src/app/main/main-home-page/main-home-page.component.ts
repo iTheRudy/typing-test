@@ -143,7 +143,7 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
         const correspondingDisplayWord = firstRowOfWords[this.highlightedWord];
         console.log('lastEnteredWord', lastEnteredWord);
         console.log('correspondingDisplayWord', correspondingDisplayWord);
-        const wrongWord = !correspondingDisplayWord.includes(lastEnteredWord);
+        const wrongWord = !correspondingDisplayWord.startsWith(lastEnteredWord);
         if (wrongWord) {
             this.wrongWords.add(this.highlightedWord);
         } else {
