@@ -11,6 +11,7 @@
         }
       },
       "root": "",
+      "glob": "_redirects",
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
