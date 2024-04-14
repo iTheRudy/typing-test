@@ -8,9 +8,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class MainCountDownComponent implements OnInit {
 
 
-    selectedTiming = 10;
-
-    timings = [10, 15, 30, 60, 120];
+    timings = [15, 30, 60, 120];
+    selectedTiming = this.timings[0];
 
     difficultyLevels = ['easy', 'medium', 'hard'];
 
@@ -31,7 +30,7 @@ export class MainCountDownComponent implements OnInit {
 
 
     ngOnInit() {
-        this.selectedTiming = this.timings[0];
+        // this.selectedTiming = this.timings[0];
         this.countdown = this.selectedTiming;
         this.selectedTimingChanged.emit(this.selectedTiming)
     }

@@ -10,17 +10,23 @@
                     <app-main-count-down
                             (selectedDifficultyLevelChanged)="selectedDifficultyLevel = $event;fetchText(selectedDifficultyLevel);speedCalculator.reset()"
                             (selectedTimingChanged)="selectedTiming=$event; speedCalculator.selectedTiming=$event"
-                            (timerEnded)="speedCalculator.calculateSpeed(); showTypingSpeed = true;"
+                            (timerEnded)="speedCalculator.calculateSpeed(); showTypingSpeed = true; restartBackgroundUpdateSubscription()"
                             #timer
                     ></app-main-count-down>
                     <!--                    <button (click)="fetchText('medium'); resetTest()">Refresh data</button>-->
-                    <div class="col-11 px-3" *ngIf="textLoaded">
+                    <div class="col-11 px-3 first-row" *ngIf="textLoaded"
+                    >
+                        <!--                              data-widthi="{{'100px'}}" data-heighti="{{'50px'}}"-->
+<!--                              [class.highlighted-word]="index === highlightedWord"-->
                         <span *ngFor="let index of indexArray"
                               [class.wrong-word]="wrongWords.has(index)"
-                              [class.highlighted-word]="index === highlightedWord"
-                              class="font-normal mr-2 px-1">{{firstRowOfWords[index]}}</span>
+                              class="font-normal mr-2 px-1 actual-word position-relative z-2">{{firstRowOfWords[index]}}
+                            </span>
+                        <span #backgroundDiv id="background-div">
+                        </span>
+
                     </div>
-                    <div class="col-11 px-3" *ngIf="textLoaded">
+                    <div class="col-11 px-3 second-row" *ngIf="textLoaded">
                         <span *ngFor="let word of secondRowOfWords" class="font-normal mr-2">{{word}}</span>
                     </div>
                     <div class="col-12 d-flex justify-content-center flex-column">
