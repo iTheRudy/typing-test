@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "buildGitHub": "ng build --output-path docs --base-href /typing-test/",
-    "publishBuild": "git add . && git commit -m \"add build\" && git push origin HEAD:deploy",
+    "pushGitHub": "git add . && git commit -m \"add build\" && git push origin HEAD:main",
+    "buildAndPush": "npm run buildGitHub && npm run pushGitHub",
     "test": "ng test"
   },
   "private": true,

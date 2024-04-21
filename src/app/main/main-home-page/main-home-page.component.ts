@@ -14,23 +14,27 @@ import {interval, Subscription} from "rxjs";
 export class MainHomePageComponent implements OnInit, AfterViewInit {
 
 
-    subscription: Subscription;
+    subscription!: Subscription;
 
     updateCount = 0;
 
     constructor(protected fileService: FileService) {
-        this.subscription = interval(100) // 1000 milliseconds = 1 second
-            .subscribe(() => {
-                // Function to run every interval
-                if(this.updateCount>5){
-                    this.subscription.unsubscribe();
-                }
-                this.updateCount++;
-                this.myFunction();
-            });
+        // this.subscription = interval(100) // 1000 milliseconds = 1 second
+        //     .subscribe(() => {
+        //         // Function to run every interval
+        //         if (this.updateCount == 5) {
+        //             this.subscription.unsubscribe();
+        //             console.log('unsubscribed')
+        //             return;
+        //         }
+        //         this.updateCount++;
+        //         this.myFunction();
+        //     });
+        this.restartBackgroundUpdateSubscription();
     }
 
     myFunction() {
+        // console.log('Subscription Started');
         this.handleBackgroundChange()
     }
 
@@ -104,10 +108,11 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
     }
 
     handleBackgroundChange() {
+
         setTimeout(() => {
         }, 100)
         if (this.backgroundDiv?.style) {
-            if (this.showTypingSpeed) {
+            if (this.showTypingSpeed || this.textAreaElement?.nativeElement?.focusout) {
                 this.backgroundDiv.style.display = "none";
             } else {
                 this.backgroundDiv.style.display = "inline-block";
@@ -124,21 +129,22 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
             this.backgroundDiv!.style.left = `${rect.left}px`;
             this.backgroundDiv!.style.width = `${rect.width}px`;
             this.backgroundDiv!.style.height = `${rect.height}px`;
-        }
-        catch (e){
+        } catch (e) {
 
         }
         // console.log(this.backgroundDiv);
     }
 
-    restartBackgroundUpdateSubscription(){
-        console.log('Subscription Started');
+    restartBackgroundUpdateSubscription() {
+        this.subscription = new Subscription();
         this.updateCount = 0;
-        this.subscription = interval(100) // 1000 milliseconds = 1 second
+        this.subscription = interval(1) // 1000 milliseconds = 1 second
             .subscribe(() => {
                 // Function to run every interval
-                if(this.updateCount>5){
+                if (this.updateCount == 5) {
                     this.subscription.unsubscribe();
+                    // console.log('unsubscribed')
+                    return;
                 }
                 this.updateCount++;
                 this.myFunction();
@@ -146,7 +152,7 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
     }
 
     resetTest() {
-        this.restartBackgroundUpdateSubscription();
+        // this.restartBackgroundUpdateSubscription();
         this.shuffleArray(this.displayTextArray);
         this.wrongWords.clear();
         //console.log(this.displayTextArray)
@@ -167,13 +173,14 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
 
     fetchText(difficultyLevel: string) {
         this.selectedDifficultyLevel = difficultyLevel;
-        this.fileService.getFileContent(difficultyLevel).subscribe(value => {
+        const fetchTextSubscription = this.fileService.getFileContent(difficultyLevel).subscribe(value => {
             this.displayText = value.toString();
             this.displayTextArray = this.displayText.split(' ');
             this.textLoaded = true;
-            //console.log(this.displayTextArray);
+            console.log(this.displayTextArray);
             this.resetTest();
         })
+        // fetchTextSubscription.unsubscribe();
     }
 
 
@@ -215,7 +222,7 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
         const textAreaWords = input.value.split(' ');
         //console.log('User Input', input.value);
         const length = input.value.split('').length;
-        console.log("length:",textAreaWords.length%10);
+        console.log("length:", textAreaWords.length % 10);
         this.changeFirstRowOfWords(textAreaWords);
         this.checkSpellingOfLastWord(textAreaWords, this.firstRowOfWords);
     }
@@ -223,6 +230,11 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
     checkSpellingOfLastWord(textAreaWords: string[], firstRowOfWords: string[]) {
         const lastEnteredWord = textAreaWords[textAreaWords.length - 1];
         const correspondingDisplayWord = firstRowOfWords[this.highlightedWord];
+        const previousFirstRowOfWord = firstRowOfWords[this.highlightedWord - 1];
+        const previousEnteredWord = textAreaWords[textAreaWords.length - 2];
+        if (previousFirstRowOfWord !== previousEnteredWord) {
+            this.wrongWords.add(this.highlightedWord - 1);
+        }
         //console.log('lastEnteredWord', lastEnteredWord);
         //console.log('correspondingDisplayWord', correspondingDisplayWord);
         const wrongWord = !correspondingDisplayWord.startsWith(lastEnteredWord);
@@ -232,12 +244,13 @@ export class MainHomePageComponent implements OnInit, AfterViewInit {
             this.wrongWords.delete(this.highlightedWord);
         }
     }
-    collectedWords:string[] = [];
+
+    collectedWords: string[] = [];
 
     changeFirstRowOfWords(textAreaWords: string[]) {
-        if(textAreaWords.length%10>8)
-        this.restartBackgroundUpdateSubscription();
+        // if (textAreaWords.length % 10 == 10)
         if (textAreaWords.length > this.endIndex) {
+            this.restartBackgroundUpdateSubscription();
             // this.collectedWords.concat(this.textAreaContent.split(' '));
             // this.textAreaContent = '';
             // console.log(this.collectedWords);
